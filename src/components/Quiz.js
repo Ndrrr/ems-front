@@ -10,6 +10,7 @@ export const Quiz = () => {
     const [currentQuizId, setCurrentQuizId] = useState(0);
     const [currentQuizName, setCurrentQuizName] = useState(0);
     const [currentQuizDescription, setCurrentQuizDescription] = useState(0);
+    const [currentQuizCourseId, setCurrentQuizCourseId] = useState(0);
 
     useEffect(() => {
         if(!load) {
@@ -46,7 +47,8 @@ export const Quiz = () => {
         try {
             axios.post('quiz/' + currentQuizId, {
                 name: currentQuizName,
-                description: currentQuizDescription
+                description: currentQuizDescription,
+                courseId: currentQuizCourseId
             }, {withCredentials: true});
             window.location.reload();
         } catch (e) {
@@ -106,9 +108,9 @@ export const Quiz = () => {
                                            id="fc-description"
                                     />
                                 </div>
-                                <div>
+                                <div className="form-group">
                                     <label htmlFor="courses">Select Course</label>
-                                    <select id="fc-courses" name="courses">
+                                    <select id="fc-courses" name="courses" className="form-select">
                                         {courseList.map((course) => {
                                             return <option value={course.id}>{course.name}</option>
                                         })}
@@ -161,6 +163,15 @@ export const Quiz = () => {
                                            onChange={(e) => setCurrentQuizDescription(e.target.value)}
                                     />
                                 </div>
+                                <div className="form-group">
+                                    <label htmlFor="courses">Select Course</label>
+                                    <select id="courses" name="courses" className="form-select"
+                                            value={currentQuizCourseId} onChange={(e) => setCurrentQuizCourseId(e.target.value)}>
+                                        {courseList.map((course) => {
+                                            return <option value={course.id}>{course.name}</option>
+                                        })}
+                                    </select>
+                                </div>
                                 <br/>
                                 <div className="form-group">
                                     <button type="submit" className="btn btn-primary btn-block">Submit</button>
@@ -183,6 +194,7 @@ export const Quiz = () => {
                 <tr className="">
                     <th>Quiz Name</th>
                     <th>Quiz Description</th>
+                    <th>Course</th>
                     <th>Control</th>
                 </tr>
                 </thead>
@@ -191,12 +203,14 @@ export const Quiz = () => {
                     <tr key={quiz.id}>
                         <td>{quiz.name}</td>
                         <td>{quiz.description}</td>
+                        <td>{quiz.course.name}</td>
                         <td>
                             <button className="btn btn-warning" data-toggle="modal" data-target="#editQuizModal"
                                     onClick={() => {
                                         setCurrentQuizId(quiz.id)
                                         setCurrentQuizName(quiz.name)
-                                        setCurrentQuizDescription(quiz.description)}}
+                                        setCurrentQuizDescription(quiz.description)
+                                        setCurrentQuizCourseId(quiz.course.id)}}
                             >
                                 Edit
                             </button>
