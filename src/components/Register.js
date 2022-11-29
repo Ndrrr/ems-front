@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import Cookies from 'universal-cookie';
 import axios from "axios";
+
+const cookies = new Cookies();
 
 export const Register = () => {
   const [firstName, setFirstName] = useState('');
@@ -9,6 +12,10 @@ export const Register = () => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [navigate, setNavigate] = useState(false);
+
+  if(cookies.get('access_token')) {
+    return <Navigate to="/" />
+  }
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +34,7 @@ export const Register = () => {
   }
 
   return (
-      <div className="container">
+      <div className="container App-header">
         <h1 className="h3 mb-3 font-weight-normal text-center">Please sign up</h1>
         <form className="form-signin" onSubmit={onSubmit}>
           <label htmlFor="inputFirstName" className="sr-only">First Name</label>

@@ -5,7 +5,10 @@ import axios from "axios";
 const cookies = new Cookies();
 
 const logout = () => {
-  axios.post("auth/logout");
+    cookies.remove("access_token");
+    cookies.remove("refresh_token")
+    axios.post("auth/logout");
+    window.location.href = "/login";
 }
 
 const loginRegLink = (
@@ -25,16 +28,21 @@ const loginRegLink = (
 
 const userLink = (
     <ul className="navbar-nav">
-      <li className="nav-item">
-        <Link to="/profile" className="nav-link">
-          User
+    <li className="nav-item">
+    <Link to="/course" className="nav-link">
+      My Courses
+    </Link>
+    </li>
+    <li className="nav-item">
+        <Link to="/quiz" className="nav-link">
+            My Quizzes
         </Link>
-      </li>
-      <li className="nav-item">
-        <a href="" onClick={logout} className="nav-link">
-          Logout
-        </a>
-      </li>
+    </li>
+    <li className="nav-item">
+    <a href="#" onClick={logout} className="nav-link">
+      Logout
+    </a>
+    </li>
     </ul>
 )
 
@@ -68,7 +76,7 @@ export const Navbar = () => {
           {
             // change below refresh token
           }
-          {cookies.get('refresh_token') ? userLink : loginRegLink}
+          {cookies.get('access_token') ? userLink : loginRegLink}
         </div>
       </nav>
   )
